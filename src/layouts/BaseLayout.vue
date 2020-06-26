@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-navigation-drawer app>
+    <v-navigation-drawer v-if="!isMobile" permanent app>
       <!-- -->
     </v-navigation-drawer>
 
@@ -15,11 +15,10 @@
         <slot />
       </v-container>
     </v-main>
-
     <v-bottom-navigation v-model="bottomNav" v-if="isMobile" app>
       <v-btn value="recent">
-        <span>Recent</span>
-        <v-icon>mdi-history</v-icon>
+        <span>Home</span>
+        <v-icon>mdi-home</v-icon>
       </v-btn>
 
       <v-btn value="favorites">
@@ -28,36 +27,25 @@
       </v-btn>
 
       <v-btn value="nearby">
-        <span>Nearby</span>
-        <v-icon>mdi-map-marker</v-icon>
+        <span>Search</span>
+        <v-icon>mdi-magnify</v-icon>
       </v-btn>
     </v-bottom-navigation>
 
-    <v-footer app>
-      <!-- -->
-    </v-footer>
+    <!-- <v-footer app>
+    </v-footer> -->
   </v-app>
 </template>
 
 <script>
 export default {
   data () {
-    return {
-      bottomNav: 'favorites',
-      isMobile: false
-    }
+    return { bottomNav: 'favorites' }
   },
-  beforeDestroy () {
-    if (typeof window != 'undefined') {
-      window.removeEventListener('resize', this.onResize, { passive: true })
-    }
-  },
-  mounted () {
-    window.addEventListener('resize', this.onResize, { passive: true })
-  },
-  methods: {
-    onResize () {
-      this.isMobile = window.innerWidth < 680
+
+  computed: {
+    isMobile () {
+      return this.$vuetify.breakpoint.mobile
     }
   }
 }
